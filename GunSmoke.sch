@@ -1,0 +1,172 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:special
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:o_zilog
+LIBS:ym2203
+LIBS:GunSmoke-cache
+EELAYER 24 0
+EELAYER END
+$Descr A0 46811 33110
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Z80 U67
+U 1 1 520853F3
+P 6300 3750
+F 0 "U67" H 6300 5100 60  0000 C CNN
+F 1 "Z80" H 6300 2400 60  0000 C CNN
+F 2 "Z80 (Sound CPU)" H 6300 3750 60  0000 C CNB
+F 3 "" H 6300 3750 60  0000 C CNN
+	1    6300 3750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Z80 U?
+U 1 1 52085405
+P 3700 3800
+F 0 "U?" H 3700 5150 60  0000 C CNN
+F 1 "Z80" H 3700 2450 60  0000 C CNN
+F 2 "Z80 (main CPU)" H 3700 3800 60  0000 C CNB
+F 3 "" H 3700 3800 60  0000 C CNN
+	1    3700 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74LS138 U89
+U 1 1 52085492
+P 8500 4200
+F 0 "U89" H 8600 4700 60  0000 C CNN
+F 1 "74LS138" H 8650 3651 60  0000 C CNN
+F 2 "DEMUX" H 8500 4200 60  0000 C CNB
+F 3 "" H 8500 4200 60  0000 C CNN
+	1    8500 4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7250 3850 7900 3850
+Wire Wire Line
+	7900 3950 7250 3950
+Wire Wire Line
+	7250 4050 7900 4050
+$Comp
+L 74LS74 U92SUP
+U 1 1 5208552F
+P 10100 4750
+F 0 "U92SUP" H 10250 5050 60  0000 C CNN
+F 1 "74LS74" H 10400 4455 60  0000 C CNN
+F 2 "D FLIPFLOP" H 10100 4750 60  0000 C TNB
+F 3 "" H 10100 4750 60  0000 C CNN
+	1    10100 4750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9100 4550 9500 4550
+$Comp
+L 74LS74 U92INF
+U 2 1 520855E9
+P 11800 4750
+F 0 "U92INF" H 11950 5050 60  0000 C CNN
+F 1 "74LS74" H 12100 4455 60  0000 C CNN
+F 2 "D FLIP FLOP" H 11800 4750 60  0000 C CNB
+F 3 "" H 11800 4750 60  0000 C CNN
+	2    11800 4750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10700 4550 11200 4550
+$Comp
+L 74LS367 U88
+U 1 1 520856E1
+P 10800 2950
+F 0 "U88" H 10800 2900 60  0000 C CNN
+F 1 "74LS367" H 10900 2700 60  0000 C CNN
+F 2 "Hex Bus Driver 3 state" V 10800 2950 60  0000 C CNB
+F 3 "" H 10800 2950 60  0000 C CNN
+	1    10800 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	11500 2550 11800 2550
+Wire Wire Line
+	11800 2550 11800 3700
+Wire Wire Line
+	11800 3700 9350 3700
+Wire Wire Line
+	10950 3700 10950 4750
+Wire Wire Line
+	10950 4750 11200 4750
+Wire Wire Line
+	9350 3700 9350 4750
+Wire Wire Line
+	9350 4750 9500 4750
+Connection ~ 10950 3700
+Wire Wire Line
+	12400 4950 12550 4950
+Wire Wire Line
+	12550 4950 12550 3900
+Wire Wire Line
+	12550 3900 9950 3900
+Wire Wire Line
+	9950 3900 9950 3350
+Wire Wire Line
+	9950 3350 10100 3350
+$Comp
+L YM2203 U?
+U 1 1 52086367
+P 6700 9450
+F 0 "U?" H 7100 8400 60  0000 C CNN
+F 1 "YM2203" H 6500 9600 60  0000 C CNN
+F 2 "" H 6800 9800 60  0000 C CNN
+F 3 "" H 6800 9800 60  0000 C CNN
+	1    6700 9450
+	1    0    0    -1  
+$EndComp
+$Comp
+L YM2203 U?
+U 1 1 52086387
+P 10000 9500
+F 0 "U?" H 10400 8450 60  0000 C CNN
+F 1 "YM2203" H 9800 9650 60  0000 C CNN
+F 2 "" H 10100 9850 60  0000 C CNN
+F 3 "" H 10100 9850 60  0000 C CNN
+	1    10000 9500
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
