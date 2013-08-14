@@ -1,4 +1,4 @@
-update=Seg 12 Ago 2013 01:22:24 BRT
+update=Ter 13 Ago 2013 10:24:32 BRT
 version=1
 last_client=eeschema
 [cvpcb]
@@ -89,3 +89,4 @@ LibName29=contrib
 LibName30=valves
 LibName31=libs/o_zilog
 LibName32=libs/ym2203
+LibName33=libs/o_memory
