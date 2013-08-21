@@ -32,6 +32,7 @@ LIBS:valves
 LIBS:o_zilog
 LIBS:ym2203
 LIBS:o_memory
+LIBS:km6816
 LIBS:GunSmoke-cache
 EELAYER 24 0
 EELAYER END
