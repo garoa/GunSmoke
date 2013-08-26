@@ -1,3 +1,10 @@
+;music player for the GunSmoke arcade hardware
+; It uses 2 ay-3-8910 chips to play up to 6 simultaneous audio tracks
+;
+;author: Felipe Sanches <juca@members.fsf.org>
+;year: 2013
+;This code is released to the public domain
+
 NOTE_PTRs: equ $c000
 CH1_NOTE_PTR: equ $c000
 CH2_NOTE_PTR: equ $c002
