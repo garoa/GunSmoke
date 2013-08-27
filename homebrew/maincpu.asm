@@ -10,6 +10,8 @@ DSW2: equ $c004
 SOUND_COMMAND: equ $c800
 HWCFG: equ $c804
 VIDEORAM: equ $d000 ;videoram area: d000-d3ff
+COLORRAM: equ $d400 ;videoram area: d400-d7ff
+SPRITERAM: equ $f000 ;spriteram area: f000-ffff
 SCROLLX: equ $d800
 SCROLLY: equ $d802
 VIDEOCFG: equ $d806
@@ -26,6 +28,7 @@ ld (INPUT_MAP), a
 ld a, NO_SOUND
 ld (SOUND_COMMAND), a
 call init_video
+ld iy, VIDEORAM
 
 infiniteloop:
 ei
@@ -37,7 +40,6 @@ ds $36, $0 ; fill in a block of NOPs
 
 call check_user_input
 call scroll_vertically
-ld ix, VIDEORAM
 ret
 
 scroll_vertically:
@@ -116,22 +118,19 @@ ld (VIDEOCFG), a
 ret
 
 flip1:
-ld a, $40 ;flips screen
+ld a, $40 + $80 ;flip screen and enable chars
 ld (HWCFG), a
 ret
 
 flip2:
-ld a, $0 ;flips screen
+ld a, $80 ; unflip screen and enable chars
 ld (HWCFG), a
 ret
 
 ;this is a test. I'm trying to understand how the videoram works, So I'm trowing values when I press the buttons.
-;I was expecting to see random sprites on the screen, but for some reason nothing shows up.
 random_tiles:
-ld (ix+0), a
-inc ix
-
-ld a, $3c
-ld (ix+0), a
-inc ix
+ld a, 0
+add iyh
+ld (iy+0), a
+inc iy
 ret
