@@ -88,7 +88,17 @@ push af
 ld a, $31
 ld (SOUND_ID), a
 
-call random_tiles
+push bc
+push ix
+
+ld b, 16
+ld c, 16
+ld ix, example_string
+call print_line
+
+pop ix
+pop bc
+
 pop af
 ret
 
@@ -134,3 +144,76 @@ add iyh
 ld (iy+0), a
 inc iy
 ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Routine to print a line of text at a
+;; given screen coordinate
+;;
+;; INPUTS:
+;;
+;; B = X coordinate
+;; C = Y coordinate
+;; IX = pointer to null-terminated string
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+print_line:
+push af
+push bc
+push de
+push iy
+
+ld d, 0
+ld e, c
+ld a, 0
+
+sla a
+sla e
+adc a, d
+
+sla a
+sla e
+adc a, d
+
+sla a
+sla e
+adc a, d
+
+sla a
+sla e
+adc a, d
+
+sla a
+sla e
+adc a, d
+
+ld d, a
+;;DE = 32*Y
+
+ld iy, VIDEORAM
+add iy, de
+ld c, b
+ld b, 0
+add iy, bc
+;;IY = videoram_base_address + 32*Y + X
+
+;print some chars there
+next_char:
+ld a, (ix+0)
+inc a
+dec a
+jp z, finished_printing_line
+ld (iy+0), a
+inc ix
+ld bc, 32
+add iy, bc
+jp next_char
+finished_printing_line:
+
+pop iy
+pop de
+pop bc
+pop af
+ret
+
+example_string:
+db 10, 12, 14, 11, 13, 15, 0
+
