@@ -21,6 +21,8 @@ CH4_COUNTER: equ $c00f
 CH5_COUNTER: equ $c010
 CH6_COUNTER: equ $c011
 
+SOUND_COMMAND: equ $c800
+
 im 1 ; set interrupt mode = 1
 ld sp, $c800 ; init stack pointer (RAM area: c000-c7ff)
 
@@ -32,11 +34,59 @@ jr infiniteloop
 
 ds $36, $0 ; fill in a block of NOPs
 
+ld a, (SOUND_COMMAND)
+cp $FF
+jp z, play_all_channels
+
+call setup_new_sound
+
 play_all_channels:
 ld b, 6
 play_next_channel:
 call play_channel
 djnz play_next_channel
+ret
+
+
+;;;;;;;;;;;;
+;; detects which channel is free to use for playing a sound
+;; requested by the main CPU
+;;
+;; inputs:
+;; a = sound command received from the main Z80 CPU
+;;;;;;;;;;;;
+setup_new_sound:
+push af
+ld b, 6
+ld ix, CHANNEL_COUNTERs
+check_channel_availability:
+ld a, (ix+5)
+dec ix
+inc a
+dec a
+jp z, found_a_free_channel
+djnz check_channel_availability
+
+found_a_free_channel:
+pop af
+
+; TODO: use the value in the A reg to select which sound to play
+; for now we simply play again the blues tune
+
+dec b
+ld c, b
+ld b, 0
+ld ix, NOTE_PTRs
+ld iy, CHANNEL_COUNTERs
+ld de, fast_beeps
+add ix, bc
+add ix, bc
+ld (ix + 1), d
+ld (ix + 0), e
+ld a, (de)
+add iy, bc
+ld (iy + 0), a
+
 ret
 
 ;;;;;;;;;;;;
@@ -153,12 +203,12 @@ pop af
 ret
 
 init_channels:
-ld de, blues_bass
+ld de, no_song
 ld (CH1_NOTE_PTR), de
 ld a, (de)
 ld (CH1_COUNTER), a
 
-ld de, blues_piano
+ld de, no_song
 ld (CH2_NOTE_PTR), de
 ld a, (de)
 ld (CH2_COUNTER), a
@@ -238,6 +288,29 @@ db $0f
 db TEMPO
 dw MUTE
 db $00
+
+db 0
+
+fast_beeps:
+db 10
+dw C3
+db $0f
+
+db 10
+dw C4
+db $0f
+
+db 10
+dw C5
+db $0f
+
+db 10
+dw C4
+db $0f
+
+db 10
+dw MUTE
+db $0f
 
 db 0
 
