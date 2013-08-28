@@ -15,6 +15,7 @@ SPRITERAM: equ $f000 ;spriteram area: f000-ffff
 SCROLLX: equ $d800
 SCROLLY: equ $d802
 VIDEOCFG: equ $d806
+CLEAR_COLOR: equ $80 ; why?!
 
 NO_SOUND: equ $ff
 INPUT_MAP: equ $e000
@@ -93,10 +94,16 @@ ld (SOUND_ID), a
 push bc
 push ix
 
-ld a, 5 ;; set color = #5
+ld a, 5
 ld b, 16
 ld c, 16
 ld ix, example_string
+call print_line
+
+ld a, 6
+ld b, 5
+ld c, 5
+ld ix, example_string2
 call print_line
 
 pop ix
@@ -126,6 +133,7 @@ ret
 init_video:
 ld a, $30 ; enables bg / enables sprites / selects sprite3bank #0
 ld (VIDEOCFG), a
+call clear_screen
 ret
 
 flip1:
@@ -242,6 +250,28 @@ pop de
 pop bc
 ret
 
+clear_screen:
+push ix
+ld ix, COLORRAM
+ld b, 0
+ld a, CLEAR_COLOR
+clear_screen_loop:
+ld (ix+0), a
+inc ix
+ld (ix+0), a
+inc ix
+ld (ix+0), a
+inc ix
+ld (ix+0), a
+inc ix
+djnz clear_screen_loop
+
+pop ix
+ret
+
 example_string:
 db 10, 12, 14, 11, 13, 15, 0
+
+example_string2:
+db "GAROA HACKER CLUBE", 0
 
