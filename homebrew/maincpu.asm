@@ -94,9 +94,9 @@ ld (SOUND_ID), a
 push bc
 push ix
 
-ld a, 5
+ld a, 2
 ld b, 16
-ld c, 16
+ld c, 3
 ld ix, example_string
 call print_line
 
@@ -207,6 +207,7 @@ ld a, (ix+0)
 inc a
 dec a
 jp z, finished_printing_line
+sub 55
 ld (iy+0), a
 inc ix
 ld bc, 32
@@ -270,7 +271,7 @@ pop ix
 ret
 
 example_string:
-db 10, 12, 14, 11, 13, 15, 0
+db "OFICINA DE RETROPROGRAMACAO", 0
 
 example_string2:
 db "GAROA HACKER CLUBE", 0
