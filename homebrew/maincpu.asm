@@ -106,6 +106,12 @@ ld c, 5
 ld ix, example_string2
 call print_line
 
+ld a, 2        ; sprite id
+ld bc, 128     ; X
+ld d, 128      ; Y
+ld e, 10       ; Color
+call set_sprite
+
 pop ix
 pop bc
 
@@ -134,6 +140,12 @@ init_video:
 ld a, $30 ; enables bg / enables sprites / selects sprite3bank #0
 ld (VIDEOCFG), a
 call clear_screen
+
+ld a, 3        ; sprite id
+ld bc, 128     ; X
+ld d, 128      ; Y
+ld e, 30       ; Color
+call set_sprite
 ret
 
 flip1:
@@ -144,6 +156,44 @@ ret
 flip2:
 ld a, $80 ; unflip screen and enable chars
 ld (HWCFG), a
+ret
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Routine to position a sprite on screen
+;;
+;; INPUTS:
+;;
+;; A = sprite number
+;; BC = X coordinate
+;; D = Y coordinate
+;; E = color
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+set_sprite:
+push ix
+
+ld ix, SPRITERAM
+ld (ix+0), a
+
+;y position
+ld a, d
+ld (ix+2), a
+
+;x position (8 lower bits)
+ld a, c
+ld (ix+3), a
+
+;Attribute:
+;bitfields [BBXFCCCC]
+;BB = bank selector (wip. for now we set it to 00)
+;X = X position 9th bit
+;CCCC = 4bit color
+ld a, b
+and 1
+sla a, 5
+add e
+ld (ix+1), a
+
+pop ix
 ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
