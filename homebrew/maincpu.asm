@@ -47,6 +47,8 @@ ld ix, vertscroll
 ld b, (ix+0)
 ld c, (ix+1)
 inc bc
+inc bc
+inc bc
 ld a, c
 ld (SCROLLX), a
 ld a, b
@@ -91,6 +93,7 @@ ld (SOUND_ID), a
 push bc
 push ix
 
+ld a, 5 ;; set color = #5
 ld b, 16
 ld c, 16
 ld ix, example_string
@@ -107,7 +110,6 @@ push af
 ld a, $32
 ld (SOUND_ID), a
 
-call random_tiles
 call flip2
 pop af
 ret
@@ -117,7 +119,6 @@ push af
 ld a, $33
 ld (SOUND_ID), a
 
-call random_tiles
 call flip1
 pop af
 ret
@@ -128,7 +129,7 @@ ld (VIDEOCFG), a
 ret
 
 flip1:
-ld a, $40 + $80 ;flip screen and enable chars
+ld a, $40 ;flip screen and disable chars
 ld (HWCFG), a
 ret
 
@@ -137,29 +138,23 @@ ld a, $80 ; unflip screen and enable chars
 ld (HWCFG), a
 ret
 
-;this is a test. I'm trying to understand how the videoram works, So I'm trowing values when I press the buttons.
-random_tiles:
-ld a, 0
-add iyh
-ld (iy+0), a
-inc iy
-ret
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Routine to print a line of text at a
 ;; given screen coordinate
 ;;
 ;; INPUTS:
 ;;
+;; A = color
 ;; B = X coordinate
 ;; C = Y coordinate
 ;; IX = pointer to null-terminated string
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 print_line:
-push af
 push bc
 push de
 push iy
+push af
+push ix
 
 ld d, 0
 ld e, c
@@ -188,6 +183,9 @@ adc a, d
 ld d, a
 ;;DE = 32*Y
 
+push de
+push bc
+
 ld iy, VIDEORAM
 add iy, de
 ld c, b
@@ -208,10 +206,40 @@ add iy, bc
 jp next_char
 finished_printing_line:
 
+pop bc
+pop de
+ld iy, COLORRAM
+add iy, de
+ld c, b
+ld b, 0
+add iy, bc
+;;IY = colorram_base_address + 32*Y + X
+
+pop ix
+pop af
+push af
+ld c, a
+
+;color the chars there
+next_char_coloring:
+ld a, (ix+0)
+inc a
+dec a
+jp z, finished_coloring_line
+ld a, c
+ld (iy+0), a
+inc ix
+push bc
+ld bc, 32
+add iy, bc
+pop bc
+jp next_char_coloring
+finished_coloring_line:
+
+pop af
 pop iy
 pop de
 pop bc
-pop af
 ret
 
 example_string:
