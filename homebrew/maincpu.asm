@@ -41,6 +41,16 @@ ds $36, $0 ; fill in a block of NOPs
 
 call check_user_input
 call scroll_vertically
+call animate_sprite
+ret
+
+animate_sprite:
+ld bc, 80      ; X
+ld a, (vertscroll+1)
+ld d, a        ; Y
+ld e, 30       ; Color
+ld a, 3        ; sprite id
+call set_sprite
 ret
 
 scroll_vertically:
@@ -107,7 +117,7 @@ ld ix, example_string2
 call print_line
 
 ld a, 2        ; sprite id
-ld bc, 128     ; X
+ld bc, 50     ; X
 ld d, 128      ; Y
 ld e, 10       ; Color
 call set_sprite
@@ -142,7 +152,7 @@ ld (VIDEOCFG), a
 call clear_screen
 
 ld a, 3        ; sprite id
-ld bc, 128     ; X
+ld bc, 50     ; X
 ld d, 128      ; Y
 ld e, 30       ; Color
 call set_sprite
