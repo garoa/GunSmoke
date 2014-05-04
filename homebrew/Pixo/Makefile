@@ -1,4 +1,6 @@
-all:
+all: 3.ic85
+
+3.ic85: maincpu.asm
 	~/devel/z80asm/z80asm maincpu.asm -o 3.ic85
 	cp 3.ic85 ~/nonfree/mame/gunsmoke
 
