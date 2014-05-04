@@ -28,16 +28,17 @@ void save_tile(int x, int y, int tile_number){
 int main(){
 	fp = fopen("11f_gs01.bin", "r+");
 
-	save_tile(0, 0, 'G'-55);
-	save_tile(1, 0, 'A'-55);
-	save_tile(2, 0, 'M'-55);
+	save_tile(2, 0, 'C'-55);
+	save_tile(3, 0, 'G'-55);
+	save_tile(4, 0, 'A'-55);
+	save_tile(5, 0, 'M'-55);
 
-	save_tile(0, 1, 'T'-55);
-	save_tile(1, 1, 'O'-55);
-	save_tile(2, 1, 'P'-55);
-	save_tile(0, 2, 'B'-55);
-	save_tile(1, 2, 'V'-55);
-	save_tile(2, 2, 'I'-55);
+	save_tile(2, 1, 'T'-55);
+	save_tile(3, 1, 'O'-55);
+	save_tile(4, 1, 'P'-55);
+	save_tile(2, 2, 'B'-55);
+	save_tile(3, 2, 'V'-55);
+	save_tile(4, 2, 'I'-55);
 
 	fclose(fp);
 	return 0;

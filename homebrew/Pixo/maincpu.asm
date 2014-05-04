@@ -288,13 +288,13 @@ pixotosco_string:
 db "PIXOTOSCO", 0
 
 pixo_close1_string:
-db "BGAM", 0
+db "CGAM", 0
 
 pixo_close2_string:
 db "BBBB", 0
 
 pixo_open1_string:
-db "BTOP", 0
+db "CTOP", 0
 
 pixo_open2_string:
 db "BBVI", 0
