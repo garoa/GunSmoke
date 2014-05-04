@@ -22,6 +22,7 @@ NO_SOUND: equ $ff
 INPUT_MAP: equ $e000 ;byte
 SOUND_ID: equ $e001 ;byte
 PIXO_Y: equ $e002 ;byte
+CAN_INCREMENT: equ $e003 ;byte
 
 im 1; set interrupt mode = 1
 ld sp, $f000 ; init stack pointer (RAM area: e000-efff)
@@ -35,6 +36,8 @@ call init_video
 ld iy, VIDEORAM
 ld a, 8
 ld (PIXO_Y), a
+ld a, $FF
+ld (CAN_INCREMENT), a
 
 infiniteloop:
 ei
@@ -72,6 +75,10 @@ call button3_pressed
 ret
 
 button3_not_pressed:
+
+ld a, $FF
+ld (CAN_INCREMENT), a
+
 ld a, (SOUND_ID)
 ld (SOUND_COMMAND), a
 ret
@@ -94,9 +101,7 @@ ld a, 2   ;Cor
 ld ix, pixo_open2_string
 call print_line
 
-ld a, (PIXO_Y)
-;inc a
-ld (PIXO_Y), a
+call maybe_increment_y
 
 pop ix
 pop bc
@@ -120,15 +125,26 @@ ld a, 2   ;Cor
 ld ix, pixo_close2_string
 call print_line
 
-ld a, (PIXO_Y)
-;inc a
-ld (PIXO_Y), a
+call maybe_increment_y
 
 pop ix
 pop bc
 ret
 
 button3_pressed:
+ret
+
+maybe_increment_y:
+ld a, (CAN_INCREMENT)
+cp 0
+jp z, cannot_increment
+ld a, (PIXO_Y)
+inc a
+ld (PIXO_Y), a
+
+ld a, $0
+ld (CAN_INCREMENT), a
+cannot_increment:
 ret
 
 init_video:
@@ -272,14 +288,14 @@ pixotosco_string:
 db "PIXOTOSCO", 0
 
 pixo_close1_string:
-db "GAM", 0
+db "BGAM", 0
 
 pixo_close2_string:
-db "BBB", 0
+db "BBBB", 0
 
 pixo_open1_string:
-db "TOP", 0
+db "BTOP", 0
 
 pixo_open2_string:
-db "BVI", 0
+db "BBVI", 0
 
