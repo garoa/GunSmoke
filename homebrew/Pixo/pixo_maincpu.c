@@ -75,14 +75,14 @@ void maybe_increment_y(){
 }
 
 void button1_pressed(){
-	print_line("CTOP", 11, pixo_y, 2);
-	print_line("BBVI", 10, pixo_y, 2);
+	print_line("CTOP", 11, pixo_y, 6);
+	print_line("BBVI", 10, pixo_y, 6);
 	maybe_increment_y();
 }
 
 void button2_pressed(){
-	print_line("CGAM", 11, pixo_y, 2);
-	print_line("BBBB", 10, pixo_y, 2);
+	print_line("CGAM", 11, pixo_y, 6);
+	print_line("BBBB", 10, pixo_y, 6);
 	maybe_increment_y();
 }
 
