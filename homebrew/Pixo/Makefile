@@ -43,4 +43,5 @@ clean:
 	rm pixo_maincpu.sym
 	rm pixo_maincpu.lnk
 	rm pixo_maincpu.lst
+	rm pixo_maincpu.asm
 
