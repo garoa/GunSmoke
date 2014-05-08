@@ -17,7 +17,7 @@ debug: 3.ic85 11f_gs01.bin
 boot.o: boot.s
 	$(Z80ASSEMBLER) -o boot.o boot.s
 
-build_CGROM: pixo.xpm build_CGROM.c
+build_CGROM: pixo.xpm build_CGROM.c char_codes.h
 	$(CC) build_CGROM.c -o build_CGROM
 
 11f_gs01.bin: build_CGROM
@@ -25,7 +25,7 @@ build_CGROM: pixo.xpm build_CGROM.c
 	./build_CGROM
 	cp 11f_gs01.bin $(ROMPATH)/gunsmoke/
 
-pixo_maincpu.ihx: pixo_maincpu.c boot.o
+pixo_maincpu.ihx: pixo_maincpu.c char_codes.h boot.o
 	$(Z80COMPILER) boot.o pixo_maincpu.c --code-loc 0x0080 --data-loc 0xE000 --no-std-crt0
 
 3.ic85: pixo_maincpu.ihx

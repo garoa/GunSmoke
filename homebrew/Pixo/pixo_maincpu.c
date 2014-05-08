@@ -4,6 +4,8 @@ year: 2014
 This code is released to the public domain
 */
 
+#include "char_codes.h"
+
 #define SYSTEM ((char*) 0xC000)
 #define P1 ((char*) 0xC001)
 #define P2 ((char*) 0xC002)
@@ -51,17 +53,6 @@ void clear_screen(){
 }
 
 #define BODY_COLOR 6
-
-#define BLANK_CHAR ('B'-55)
-#define PIXO_BODY_E ('C'-55)
-#define PIXO_CLOSED_HEAD_E ('G'-55)
-#define PIXO_CLOSED_MOUTH_E ('A'-55)
-#define PIXO_CLOSED_LIPS_E ('M'-55)
-#define PIXO_OPEN_HEAD_E ('T'-55)
-#define PIXO_OPEN_MOUTH_E ('O'-55)
-#define PIXO_OPEN_MOUTH2_E ('V'-55)
-#define PIXO_OPEN_LIPS_E ('P'-55)
-#define PIXO_OPEN_LIPS2_E ('I'-55)
 
 void draw_head_open(int x, int y){
 	set_char(x, y,   PIXO_OPEN_LIPS_E,  BODY_COLOR);

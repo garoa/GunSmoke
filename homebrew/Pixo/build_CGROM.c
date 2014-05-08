@@ -1,4 +1,5 @@
 #include "pixo.xpm"
+#include "char_codes.h"
 #include <stdio.h>
 
 #define WIDTH 320
@@ -28,18 +29,19 @@ void save_tile(int x, int y, int tile_number){
 int main(){
 	fp = fopen("11f_gs01.bin", "r+");
 
-	save_tile(2, 0, 'C'-55);
-	save_tile(3, 0, 'G'-55);
-	save_tile(4, 0, 'A'-55);
-	save_tile(5, 0, 'M'-55);
+	save_tile(2, 0, PIXO_BODY_E);
+	save_tile(3, 0, PIXO_CLOSED_HEAD_E);
+	save_tile(4, 0, PIXO_CLOSED_MOUTH_E);
+	save_tile(5, 0, PIXO_CLOSED_LIPS_E);
 
-	save_tile(2, 1, 'T'-55);
-	save_tile(3, 1, 'O'-55);
-	save_tile(4, 1, 'P'-55);
-	save_tile(2, 2, 'B'-55);
-	save_tile(3, 2, 'V'-55);
-	save_tile(4, 2, 'I'-55);
+	save_tile(2, 1, PIXO_OPEN_HEAD_E);
+	save_tile(3, 1, PIXO_OPEN_MOUTH_E);
+	save_tile(4, 1, PIXO_OPEN_LIPS_E);
+	save_tile(2, 2, BLANK_CHAR);
+	save_tile(3, 2, PIXO_OPEN_MOUTH2_E);
+	save_tile(4, 2, PIXO_OPEN_LIPS2_E);
 
 	fclose(fp);
 	return 0;
 }
+
