@@ -1,28 +1,36 @@
+MAME = ~/devel/mame_git_svn/mame/mame64d
+ROMPATH = ~/nonfree/mame/
+Z80ASSEMBLER = as-z80
+Z80COMPILER = sdcc -mz80
+OBJCOPY = objcopy
+CC = gcc -std=gnu99
+PCB_VARIANT = gunsmokeb
+
 all: 3.ic85 11f_gs01.bin
 
 run: 3.ic85 11f_gs01.bin
-	~/devel/mame_git_svn/mame/mame64d -rp ~/nonfree/mame/ gunsmokeb -window
+	$(MAME) -rp $(ROMPATH) $(PCB_VARIANT) -window
 
 debug: 3.ic85 11f_gs01.bin
-	~/devel/mame_git_svn/mame/mame64d -rp ~/nonfree/mame/ gunsmokeb -window -debug
+	$(MAME) -rp $(ROMPATH) $(PCB_VARIANT) -window -debug
 
 boot.o: boot.s
-	as-z80 -o boot.o boot.s
+	$(Z80ASSEMBLER) -o boot.o boot.s
 
 build_CGROM: pixo.xpm build_CGROM.c
-	gcc build_CGROM.c -o build_CGROM -std=gnu99
+	$(CC) build_CGROM.c -o build_CGROM
 
 11f_gs01.bin: build_CGROM
-	cp ~/nonfree/mame/gunsmoke/11f_gs01.bin .
+	cp $(ROMPATH)/gunsmoke/11f_gs01.bin .
 	./build_CGROM
-	cp 11f_gs01.bin ~/nonfree/mame/gunsmoke/
+	cp 11f_gs01.bin $(ROMPATH)/gunsmoke/
 
 pixo_maincpu.ihx: pixo_maincpu.c boot.o
-	sdcc boot.o pixo_maincpu.c -mz80 --code-loc 0x0080 --data-loc 0xE000 --no-std-crt0
+	$(Z80COMPILER) boot.o pixo_maincpu.c --code-loc 0x0080 --data-loc 0xE000 --no-std-crt0
 
 3.ic85: pixo_maincpu.ihx
-	objcopy pixo_maincpu.ihx -I ihex -O binary 3.ic85
-	cp 3.ic85 ~/nonfree/mame/gunsmoke
+	$(OBJCOPY) pixo_maincpu.ihx -I ihex -O binary 3.ic85
+	cp 3.ic85 $(ROMPATH)/gunsmoke
 
 clean:
 	rm boot.o
