@@ -51,14 +51,45 @@ void clear_screen(){
 }
 
 #define BODY_COLOR 6
+
+#define BLANK_CHAR ('B'-55)
+#define PIXO_BODY_E ('C'-55)
+#define PIXO_CLOSED_HEAD_E ('G'-55)
+#define PIXO_CLOSED_MOUTH_E ('A'-55)
+#define PIXO_CLOSED_LIPS_E ('M'-55)
+#define PIXO_OPEN_HEAD_E ('T'-55)
+#define PIXO_OPEN_MOUTH_E ('O'-55)
+#define PIXO_OPEN_MOUTH2_E ('V'-55)
+#define PIXO_OPEN_LIPS_E ('P'-55)
+#define PIXO_OPEN_LIPS2_E ('I'-55)
+
 void draw_head_open(int x, int y){
-	print_line("CTOP", x+1, y, BODY_COLOR);
-	print_line("BBVI", x, y, BODY_COLOR);
+	set_char(x, y,   PIXO_OPEN_LIPS_E,  BODY_COLOR);
+	set_char(x, y-1, PIXO_OPEN_MOUTH_E, BODY_COLOR);
+	set_char(x, y-2, PIXO_OPEN_HEAD_E,  BODY_COLOR);
+	set_char(x, y-3, PIXO_BODY_E,       BODY_COLOR);
+
+	set_char(x-1, y,   PIXO_OPEN_LIPS2_E,  BODY_COLOR);
+	set_char(x-1, y-1, PIXO_OPEN_MOUTH2_E, BODY_COLOR);
+
+//This blank char is meant to gradually clear the screen as
+// the aligator moves forward
+//TODO: we should somehow redraw here what was previously drawn on screen
+	set_char(x-1, y-2, BLANK_CHAR,         BODY_COLOR);
 }
 
 void draw_head_closed(int x, int y){
-	print_line("CGAM", x+1, y, BODY_COLOR);
-	print_line("BBBB", x, y, BODY_COLOR);
+	set_char(x, y,   PIXO_CLOSED_LIPS_E,  BODY_COLOR);
+	set_char(x, y-1, PIXO_CLOSED_MOUTH_E, BODY_COLOR);
+	set_char(x, y-2, PIXO_CLOSED_HEAD_E,  BODY_COLOR);
+	set_char(x, y-3, PIXO_BODY_E,       BODY_COLOR);
+
+//These blank chars are meant to clear the previously opened mouth chars
+//TODO: we should somehow redraw here what was previously drawn on screen
+	set_char(x-1, y,   BLANK_CHAR, BODY_COLOR);
+	set_char(x-1, y-1, BLANK_CHAR, BODY_COLOR);
+	set_char(x-1, y-2, BLANK_CHAR, BODY_COLOR);
+	set_char(x-1, y-3, BLANK_CHAR, BODY_COLOR);
 }
 
 void init_video(){
