@@ -12,14 +12,14 @@ void save_tile(int x, int y, int tile_number){
 	for (int i=0; i<8; i++){
 		char value = 0;
 		for (int j=0; j<4; j++){
-			if(pixo_xpm[4 + y*8 + 7 - j - 4][x*8 + 7 - i] == '+')
+			if(pixo[4 + y*8 + 7 - j - 4][x*8 + 7 - i] == ' ')
 				value += (0b10001 << j);
 		}
 		fwrite(&value, 1, 1, fp);
 
 		value = 0;
 		for (int j=0; j<4; j++){
-			if(pixo_xpm[4 + y*8 + 7 - j][x*8 + 7 - i] == '+')
+			if(pixo[4 + y*8 + 7 - j][x*8 + 7 - i] == ' ')
 				value += (0b10001 << j);
 		}
 		fwrite(&value, 1, 1, fp);

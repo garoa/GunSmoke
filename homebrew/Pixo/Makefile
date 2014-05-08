@@ -17,6 +17,10 @@ debug: 3.ic85 11f_gs01.bin
 boot.o: boot.s
 	$(Z80ASSEMBLER) -o boot.o boot.s
 
+pixo.xpm: pixo.xcf
+	xcf2png pixo.xcf -o pixo.png
+	convert pixo.png pixo.xpm
+
 build_CGROM: pixo.xpm build_CGROM.c char_codes.h
 	$(CC) build_CGROM.c -o build_CGROM
 
@@ -44,4 +48,7 @@ clean:
 	rm pixo_maincpu.lnk
 	rm pixo_maincpu.lst
 	rm pixo_maincpu.asm
+	rm pixo.png
+	rm pixo.xpm
+
 
