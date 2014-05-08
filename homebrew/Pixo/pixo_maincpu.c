@@ -27,9 +27,23 @@ This code is released to the public domain
 #define true 0xFF
 #define false 0x00
 
+int mainloop_counter;
 char input_map;
 char pixo_x, pixo_y;
-bool can_increment;
+char direction;
+char state;
+
+enum {
+	DIR_NORTH,
+	DIR_SOUTH,
+	DIR_EAST,
+	DIR_WEST
+};
+
+enum {
+	OPENED_MOUTH,
+	CLOSED_MOUTH
+};
 
 //routine for placing a character on screen
 void set_char(int x, int y, char char_code, char color){
@@ -92,10 +106,12 @@ void init_video(){
 
 void init_system(){
 	*SOUND_COMMAND = NO_SOUND;
+	mainloop_counter = 0;
 	input_map = 0xFF;
 	pixo_x = 8;
 	pixo_y = 8;
-	can_increment = true;
+	direction = DIR_NORTH;
+	state = CLOSED_MOUTH;
 
 	init_video();
 
@@ -106,25 +122,16 @@ void init_system(){
 	}
 }
 
-void maybe_increment_y(){
-	if (can_increment)
-		pixo_y++;
-
-	can_increment = false;
-}
-
 void button1_pressed(){
-	draw_head_open(pixo_x, pixo_y);
-	maybe_increment_y();
+	direction = DIR_NORTH;
 }
 
 void button2_pressed(){
-	draw_head_closed(pixo_x, pixo_y);
-	maybe_increment_y();
+	direction = DIR_WEST;
 }
 
 void button3_pressed(){
-	//nothing
+	direction = DIR_EAST;
 }
 
 void check_user_input(){
@@ -144,12 +151,46 @@ void check_user_input(){
 		button3_pressed();
 		return;
 	}
+}
 
-	can_increment = true;
+void move_pixotosco(){
+	switch(direction){
+		case DIR_NORTH: pixo_x++; break;
+		case DIR_SOUTH: pixo_x--; break;
+		case DIR_EAST: pixo_y++; break;
+		case DIR_WEST: pixo_y--; break;
+	}
+}
+
+void	draw_pixotosco(){
+	if (state == OPENED_MOUTH)
+		draw_head_open(pixo_x, pixo_y);
+	else //if (state == CLOSED_MOUTH)
+		draw_head_closed(pixo_x, pixo_y);
+}
+
+void toggle_pixotosco_mouth_state(){
+	if (state == OPENED_MOUTH){
+		state = CLOSED_MOUTH;
+	} else {
+		state = OPENED_MOUTH;
+	}
+}
+
+void game_tick(){
+	toggle_pixotosco_mouth_state();
+	move_pixotosco();
+	draw_pixotosco();
 }
 
 void main_loop(){
 	check_user_input();
+
+	mainloop_counter++;
+	if (mainloop_counter > 10){
+		game_tick();
+		mainloop_counter = 0;
+	}
 }
 
 
