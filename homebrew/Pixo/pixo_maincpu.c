@@ -28,7 +28,7 @@ This code is released to the public domain
 #define false 0x00
 
 char input_map;
-char pixo_y;
+char pixo_x, pixo_y;
 bool can_increment;
 
 //routine for placing a character on screen
@@ -93,6 +93,7 @@ void init_video(){
 void init_system(){
 	*SOUND_COMMAND = NO_SOUND;
 	input_map = 0xFF;
+	pixo_x = 8;
 	pixo_y = 8;
 	can_increment = true;
 
@@ -113,12 +114,12 @@ void maybe_increment_y(){
 }
 
 void button1_pressed(){
-	draw_head_open(10, pixo_y);
+	draw_head_open(pixo_x, pixo_y);
 	maybe_increment_y();
 }
 
 void button2_pressed(){
-	draw_head_closed(10, pixo_y);
+	draw_head_closed(pixo_x, pixo_y);
 	maybe_increment_y();
 }
 
