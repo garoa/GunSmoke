@@ -122,33 +122,42 @@ void init_system(){
 	}
 }
 
-void button1_pressed(){
-	direction = DIR_NORTH;
+void button_right_pressed(){
+	direction = DIR_EAST;
 }
 
-void button2_pressed(){
+void button_left_pressed(){
 	direction = DIR_WEST;
 }
 
-void button3_pressed(){
-	direction = DIR_EAST;
+void button_up_pressed(){
+	direction = DIR_NORTH;
+}
+
+void button_down_pressed(){
+	direction = DIR_SOUTH;
 }
 
 void check_user_input(){
 	char a = ~input_map ^ *P1;
 
-	if ((a & (1 << 4))==0){
-		button1_pressed();
+	if ((a & (1 << 0))==0){
+		button_right_pressed();
 		return;
 	}
 
-	if ((a & (1 << 5))==0){
-		button2_pressed();
+	if ((a & (1 << 1))==0){
+		button_left_pressed();
 		return;
 	}
 
-	if ((a & (1 << 6))==0){
-		button3_pressed();
+	if ((a & (1 << 2))==0){
+		button_down_pressed();
+		return;
+	}
+
+	if ((a & (1 << 3))==0){
+		button_up_pressed();
 		return;
 	}
 }
