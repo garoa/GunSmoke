@@ -29,13 +29,18 @@ char input_map;
 char pixo_y;
 bool can_increment;
 
+//routine for placing a character on screen
+void set_char(int x, int y, char char_code, char color){
+	*(COLORRAM + 32*y + x) = color;
+	*(VIDEORAM + 32*y + x) = char_code;
+}
+
 // Routine to print a line of text at a
 // given screen coordinate
 void print_line(char* str, int x, int y, char color){
 	char* ptr = str;
 	while (*ptr != 0){
-		*(COLORRAM + 32*y + x) = color;
-		*(VIDEORAM + 32*(y++) + x) = *(ptr++) - 55;
+		set_char(x, y++, *(ptr++) - 55, color);
 	}
 }
 
