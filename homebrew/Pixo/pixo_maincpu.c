@@ -50,6 +50,17 @@ void clear_screen(){
 		*(COLORRAM+i) = CLEAR_COLOR;
 }
 
+#define BODY_COLOR 6
+void draw_head_open(int x, int y){
+	print_line("CTOP", x+1, y, BODY_COLOR);
+	print_line("BBVI", x, y, BODY_COLOR);
+}
+
+void draw_head_closed(int x, int y){
+	print_line("CGAM", x+1, y, BODY_COLOR);
+	print_line("BBBB", x, y, BODY_COLOR);
+}
+
 void init_video(){
 	*VIDEOCFG = 0x30; // enables bg / enables sprites / selects sprite3bank #0
 	*HWCFG = 0x80; // unflip screen and enable chars
@@ -80,14 +91,12 @@ void maybe_increment_y(){
 }
 
 void button1_pressed(){
-	print_line("CTOP", 11, pixo_y, 6);
-	print_line("BBVI", 10, pixo_y, 6);
+	draw_head_open(10, pixo_y);
 	maybe_increment_y();
 }
 
 void button2_pressed(){
-	print_line("CGAM", 11, pixo_y, 6);
-	print_line("BBBB", 10, pixo_y, 6);
+	draw_head_closed(10, pixo_y);
 	maybe_increment_y();
 }
 
