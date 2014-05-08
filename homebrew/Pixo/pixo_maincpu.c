@@ -68,33 +68,114 @@ void clear_screen(){
 
 #define BODY_COLOR 6
 
-void draw_head_open(int x, int y){
-	set_char(x, y,   PIXO_OPEN_LIPS_E,  BODY_COLOR);
-	set_char(x, y-1, PIXO_OPEN_MOUTH_E, BODY_COLOR);
-	set_char(x, y-2, PIXO_OPEN_HEAD_E,  BODY_COLOR);
-	set_char(x, y-3, PIXO_BODY_E,       BODY_COLOR);
-
-	set_char(x-1, y,   PIXO_OPEN_LIPS2_E,  BODY_COLOR);
-	set_char(x-1, y-1, PIXO_OPEN_MOUTH2_E, BODY_COLOR);
+void draw_head_closed_north(int x, int y){
+	set_char(x+2, y, PIXO_CLOSED_LIPS_N,  BODY_COLOR);
+	set_char(x+1, y, PIXO_CLOSED_MOUTH_N, BODY_COLOR);
+	set_char(x,   y, PIXO_CLOSED_HEAD_N,  BODY_COLOR);
+	set_char(x-1, y, PIXO_BODY_N,         BODY_COLOR);
 
 //This blank char is meant to gradually clear the screen as
 // the aligator moves forward
 //TODO: we should somehow redraw here what was previously drawn on screen
-	set_char(x-1, y-2, BLANK_CHAR,         BODY_COLOR);
+	set_char(x+1, y+1, BLANK_CHAR,         BODY_COLOR);
+	set_char(x,   y+1, BLANK_CHAR,         BODY_COLOR);
+}
+
+void draw_head_closed_south(int x, int y){
+	set_char(x-2, y, PIXO_CLOSED_LIPS_S,  BODY_COLOR);
+	set_char(x-1, y, PIXO_CLOSED_MOUTH_S, BODY_COLOR);
+	set_char(  x, y, PIXO_CLOSED_HEAD_S,  BODY_COLOR);
+	set_char(x+1, y, PIXO_BODY_S,         BODY_COLOR);
+
+//This blank char is meant to gradually clear the screen as
+// the aligator moves forward
+//TODO: we should somehow redraw here what was previously drawn on screen
+	set_char(x-1, y-1, BLANK_CHAR,         BODY_COLOR);
+	set_char(  x, y-1, BLANK_CHAR,         BODY_COLOR);
+}
+
+void draw_head_closed_east(int x, int y){
+	set_char(x, y+2,   PIXO_CLOSED_LIPS_E,  BODY_COLOR);
+	set_char(x, y+1, PIXO_CLOSED_MOUTH_E, BODY_COLOR);
+	set_char(x, y, PIXO_CLOSED_HEAD_E,  BODY_COLOR);
+	set_char(x, y-1, PIXO_BODY_E,       BODY_COLOR);
+
+//This blank char is meant to gradually clear the screen as
+// the aligator moves forward
+//TODO: we should somehow redraw here what was previously drawn on screen
+	set_char(x-1, y, BLANK_CHAR,         BODY_COLOR);
+	set_char(x-1, y+1, BLANK_CHAR,         BODY_COLOR);
+}
+
+void draw_head_closed_west(int x, int y){
+	set_char(x, y-2,   PIXO_CLOSED_LIPS_W,  BODY_COLOR);
+	set_char(x, y-1, PIXO_CLOSED_MOUTH_W, BODY_COLOR);
+	set_char(x, y, PIXO_CLOSED_HEAD_W,  BODY_COLOR);
+	set_char(x, y+1, PIXO_BODY_W,       BODY_COLOR);
+
+//This blank char is meant to gradually clear the screen as
+// the aligator moves forward
+//TODO: we should somehow redraw here what was previously drawn on screen
+	set_char(x+1, y-1, BLANK_CHAR,         BODY_COLOR);
+	set_char(x+1, y, BLANK_CHAR,         BODY_COLOR);
+}
+
+void draw_head_open_north(int x, int y){
+	set_char(x+2, y, PIXO_OPEN_LIPS_N,  BODY_COLOR);
+	set_char(x+1, y, PIXO_OPEN_MOUTH_N, BODY_COLOR);
+	set_char(  x, y, PIXO_OPEN_HEAD_N,  BODY_COLOR);
+	set_char(x-1, y, PIXO_BODY_N,       BODY_COLOR);
+
+	set_char(x+2, y+1, PIXO_OPEN_LIPS2_N,  BODY_COLOR);
+	set_char(x+1, y+1, PIXO_OPEN_MOUTH2_N, BODY_COLOR);
+}
+
+void draw_head_open_south(int x, int y){
+	set_char(x-2, y,   PIXO_OPEN_LIPS_S,  BODY_COLOR);
+	set_char(x-1, y, PIXO_OPEN_MOUTH_S, BODY_COLOR);
+	set_char(  x, y, PIXO_OPEN_HEAD_S,  BODY_COLOR);
+	set_char(x+1, y, PIXO_BODY_S,       BODY_COLOR);
+
+	set_char(x-2, y-1,   PIXO_OPEN_LIPS2_S,  BODY_COLOR);
+	set_char(x-1, y-1, PIXO_OPEN_MOUTH2_S, BODY_COLOR);
+}
+
+void draw_head_open_west(int x, int y){
+	set_char(x, y-2, PIXO_OPEN_LIPS_W,  BODY_COLOR);
+	set_char(x, y-1, PIXO_OPEN_MOUTH_W, BODY_COLOR);
+	set_char(x, y, PIXO_OPEN_HEAD_W,  BODY_COLOR);
+	set_char(x, y+1, PIXO_BODY_W,       BODY_COLOR);
+
+	set_char(x+1, y-2,   PIXO_OPEN_LIPS2_W,  BODY_COLOR);
+	set_char(x+1, y-1, PIXO_OPEN_MOUTH2_W, BODY_COLOR);
+}
+
+void draw_head_open_east(int x, int y){
+	set_char(x, y+2,   PIXO_OPEN_LIPS_E,  BODY_COLOR);
+	set_char(x, y+1, PIXO_OPEN_MOUTH_E, BODY_COLOR);
+	set_char(x, y, PIXO_OPEN_HEAD_E,  BODY_COLOR);
+	set_char(x, y-1, PIXO_BODY_E,       BODY_COLOR);
+
+	set_char(x-1, y+2,   PIXO_OPEN_LIPS2_E,  BODY_COLOR);
+	set_char(x-1, y+1, PIXO_OPEN_MOUTH2_E, BODY_COLOR);
+}
+
+void draw_head_open(int x, int y){
+	switch (direction){
+		case DIR_NORTH:	draw_head_open_north(x, y); break;
+		case DIR_SOUTH:	draw_head_open_south(x, y); break;
+		case DIR_EAST:	draw_head_open_east(x, y); break;
+		case DIR_WEST:	draw_head_open_west(x, y); break;
+	}
 }
 
 void draw_head_closed(int x, int y){
-	set_char(x, y,   PIXO_CLOSED_LIPS_E,  BODY_COLOR);
-	set_char(x, y-1, PIXO_CLOSED_MOUTH_E, BODY_COLOR);
-	set_char(x, y-2, PIXO_CLOSED_HEAD_E,  BODY_COLOR);
-	set_char(x, y-3, PIXO_BODY_E,       BODY_COLOR);
-
-//These blank chars are meant to clear the previously opened mouth chars
-//TODO: we should somehow redraw here what was previously drawn on screen
-	set_char(x-1, y,   BLANK_CHAR, BODY_COLOR);
-	set_char(x-1, y-1, BLANK_CHAR, BODY_COLOR);
-	set_char(x-1, y-2, BLANK_CHAR, BODY_COLOR);
-	set_char(x-1, y-3, BLANK_CHAR, BODY_COLOR);
+	switch (direction){
+		case DIR_NORTH:	draw_head_closed_north(x, y); break;
+		case DIR_SOUTH:	draw_head_closed_south(x, y); break;
+		case DIR_EAST:	draw_head_closed_east(x, y); break;
+		case DIR_WEST:	draw_head_closed_west(x, y); break;
+	}
 }
 
 void init_video(){
