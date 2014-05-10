@@ -84,10 +84,10 @@ int main(){
 	save_tile(7, 0, PIXO_OPEN_LIPS2_W);
 
 
-	save_tile(0, 1, PIXO_BODY_SW);
-	save_tile(0, 4, PIXO_BODY_SE);
-	save_tile(2, 4, PIXO_BODY_NE);
-	save_tile(2, 2, PIXO_BODY_NW);
+	save_tile(2, 2, PIXO_BODY_E_THEN_S);
+	save_tile(2, 4, PIXO_BODY_S_THEN_W);
+	save_tile(0, 4, PIXO_BODY_W_THEN_N);
+	save_tile(0, 1, PIXO_BODY_N_THEN_E);
 
 	fclose(fp);
 	return 0;

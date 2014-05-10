@@ -30,7 +30,7 @@ This code is released to the public domain
 int mainloop_counter;
 char input_map;
 char pixo_x, pixo_y;
-char direction;
+char direction, old_direction;
 char state;
 
 enum {
@@ -72,7 +72,10 @@ void draw_head_closed_north(int x, int y){
 	set_char(x+2, y, PIXO_CLOSED_LIPS_N,  BODY_COLOR);
 	set_char(x+1, y, PIXO_CLOSED_MOUTH_N, BODY_COLOR);
 	set_char(x,   y, PIXO_CLOSED_HEAD_N,  BODY_COLOR);
-	set_char(x-1, y, PIXO_BODY_N,         BODY_COLOR);
+	if (old_direction == direction)
+		set_char(x-1, y, PIXO_BODY_N,         BODY_COLOR);
+	else
+		old_direction = direction;
 
 //This blank char is meant to gradually clear the screen as
 // the aligator moves forward
@@ -85,7 +88,10 @@ void draw_head_closed_south(int x, int y){
 	set_char(x-2, y, PIXO_CLOSED_LIPS_S,  BODY_COLOR);
 	set_char(x-1, y, PIXO_CLOSED_MOUTH_S, BODY_COLOR);
 	set_char(  x, y, PIXO_CLOSED_HEAD_S,  BODY_COLOR);
-	set_char(x+1, y, PIXO_BODY_S,         BODY_COLOR);
+	if (old_direction == direction)
+		set_char(x+1, y, PIXO_BODY_S,         BODY_COLOR);
+	else
+		old_direction = direction;
 
 //This blank char is meant to gradually clear the screen as
 // the aligator moves forward
@@ -98,7 +104,10 @@ void draw_head_closed_east(int x, int y){
 	set_char(x, y+2,   PIXO_CLOSED_LIPS_E,  BODY_COLOR);
 	set_char(x, y+1, PIXO_CLOSED_MOUTH_E, BODY_COLOR);
 	set_char(x, y, PIXO_CLOSED_HEAD_E,  BODY_COLOR);
-	set_char(x, y-1, PIXO_BODY_E,       BODY_COLOR);
+	if (old_direction == direction)
+		set_char(x, y-1, PIXO_BODY_E,       BODY_COLOR);
+	else
+		old_direction = direction;
 
 //This blank char is meant to gradually clear the screen as
 // the aligator moves forward
@@ -111,7 +120,10 @@ void draw_head_closed_west(int x, int y){
 	set_char(x, y-2,   PIXO_CLOSED_LIPS_W,  BODY_COLOR);
 	set_char(x, y-1, PIXO_CLOSED_MOUTH_W, BODY_COLOR);
 	set_char(x, y, PIXO_CLOSED_HEAD_W,  BODY_COLOR);
-	set_char(x, y+1, PIXO_BODY_W,       BODY_COLOR);
+	if (old_direction == direction)
+		set_char(x, y+1, PIXO_BODY_W,       BODY_COLOR);
+	else
+		old_direction = direction;
 
 //This blank char is meant to gradually clear the screen as
 // the aligator moves forward
@@ -124,7 +136,10 @@ void draw_head_open_north(int x, int y){
 	set_char(x+2, y, PIXO_OPEN_LIPS_N,  BODY_COLOR);
 	set_char(x+1, y, PIXO_OPEN_MOUTH_N, BODY_COLOR);
 	set_char(  x, y, PIXO_OPEN_HEAD_N,  BODY_COLOR);
-	set_char(x-1, y, PIXO_BODY_N,       BODY_COLOR);
+	if (old_direction == direction)
+		set_char(x-1, y, PIXO_BODY_N,       BODY_COLOR);
+	else
+		old_direction = direction;
 
 	set_char(x+2, y+1, PIXO_OPEN_LIPS2_N,  BODY_COLOR);
 	set_char(x+1, y+1, PIXO_OPEN_MOUTH2_N, BODY_COLOR);
@@ -134,7 +149,10 @@ void draw_head_open_south(int x, int y){
 	set_char(x-2, y,   PIXO_OPEN_LIPS_S,  BODY_COLOR);
 	set_char(x-1, y, PIXO_OPEN_MOUTH_S, BODY_COLOR);
 	set_char(  x, y, PIXO_OPEN_HEAD_S,  BODY_COLOR);
-	set_char(x+1, y, PIXO_BODY_S,       BODY_COLOR);
+	if (old_direction == direction)
+		set_char(x+1, y, PIXO_BODY_S,       BODY_COLOR);
+	else
+		old_direction = direction;
 
 	set_char(x-2, y-1,   PIXO_OPEN_LIPS2_S,  BODY_COLOR);
 	set_char(x-1, y-1, PIXO_OPEN_MOUTH2_S, BODY_COLOR);
@@ -144,7 +162,10 @@ void draw_head_open_west(int x, int y){
 	set_char(x, y-2, PIXO_OPEN_LIPS_W,  BODY_COLOR);
 	set_char(x, y-1, PIXO_OPEN_MOUTH_W, BODY_COLOR);
 	set_char(x, y, PIXO_OPEN_HEAD_W,  BODY_COLOR);
-	set_char(x, y+1, PIXO_BODY_W,       BODY_COLOR);
+	if (old_direction == direction)
+		set_char(x, y+1, PIXO_BODY_W,       BODY_COLOR);
+	else
+		old_direction = direction;
 
 	set_char(x+1, y-2,   PIXO_OPEN_LIPS2_W,  BODY_COLOR);
 	set_char(x+1, y-1, PIXO_OPEN_MOUTH2_W, BODY_COLOR);
@@ -154,7 +175,10 @@ void draw_head_open_east(int x, int y){
 	set_char(x, y+2,   PIXO_OPEN_LIPS_E,  BODY_COLOR);
 	set_char(x, y+1, PIXO_OPEN_MOUTH_E, BODY_COLOR);
 	set_char(x, y, PIXO_OPEN_HEAD_E,  BODY_COLOR);
-	set_char(x, y-1, PIXO_BODY_E,       BODY_COLOR);
+	if (old_direction == direction)
+		set_char(x, y-1, PIXO_BODY_E,       BODY_COLOR);
+	else
+		old_direction = direction;
 
 	set_char(x-1, y+2,   PIXO_OPEN_LIPS2_E,  BODY_COLOR);
 	set_char(x-1, y+1, PIXO_OPEN_MOUTH2_E, BODY_COLOR);
@@ -203,9 +227,10 @@ void init_system(){
 	}
 }
 
-void erase_mouth_when_turning(){
+void erase_mouth(){
 	int x=pixo_x, y=pixo_y;
-	switch(direction){
+
+	switch(old_direction){
 		case DIR_NORTH:
 			set_char(x+2,   y, BLANK_CHAR, BODY_COLOR);
 			set_char(x+1,   y, BLANK_CHAR, BODY_COLOR);
@@ -233,24 +258,61 @@ void erase_mouth_when_turning(){
 	}
 }
 
+void draw_corner(int from, int to){
+	switch(from){
+		case DIR_NORTH:
+			if (to == DIR_EAST)	set_char(pixo_x, pixo_y, PIXO_BODY_N_THEN_E, BODY_COLOR);
+			if (to == DIR_WEST)	set_char(pixo_x, pixo_y, PIXO_BODY_N_THEN_W, BODY_COLOR);
+			break;
+		case DIR_SOUTH:
+			if (to == DIR_EAST)	set_char(pixo_x, pixo_y, PIXO_BODY_S_THEN_E, BODY_COLOR);
+			if (to == DIR_WEST)	set_char(pixo_x, pixo_y, PIXO_BODY_S_THEN_W, BODY_COLOR);
+			break;
+		case DIR_EAST:
+			if (to == DIR_NORTH) set_char(pixo_x, pixo_y, PIXO_BODY_E_THEN_N, BODY_COLOR);
+			if (to == DIR_SOUTH) set_char(pixo_x, pixo_y, PIXO_BODY_E_THEN_S, BODY_COLOR);
+			break;
+		case DIR_WEST:
+			if (to == DIR_NORTH) set_char(pixo_x, pixo_y, PIXO_BODY_W_THEN_N, BODY_COLOR);
+			if (to == DIR_SOUTH) set_char(pixo_x, pixo_y, PIXO_BODY_W_THEN_S, BODY_COLOR);
+			break;
+	}
+}
+
 void button_right_pressed(){
-	if (direction != DIR_EAST)	erase_mouth_when_turning();
-	direction = DIR_EAST;
+	if (direction != DIR_EAST){
+		erase_mouth();
+		draw_corner(direction, DIR_EAST);
+		old_direction = direction;
+		direction = DIR_EAST;
+	}
 }
 
 void button_left_pressed(){
-	if (direction != DIR_WEST)	erase_mouth_when_turning();
-	direction = DIR_WEST;
+	if (direction != DIR_WEST){
+		erase_mouth();
+		draw_corner(direction, DIR_WEST);
+		old_direction = direction;
+		direction = DIR_WEST;
+	}
 }
 
 void button_up_pressed(){
-	if (direction != DIR_NORTH)	erase_mouth_when_turning();
-	direction = DIR_NORTH;
+	if (direction != DIR_NORTH){
+		erase_mouth();
+		draw_corner(direction, DIR_NORTH);
+		old_direction = direction;
+		direction = DIR_NORTH;
+	}
 }
 
 void button_down_pressed(){
-	if (direction != DIR_SOUTH)	erase_mouth_when_turning();
-	direction = DIR_SOUTH;
+	if (direction != DIR_SOUTH){
+		erase_mouth();
+		draw_corner(direction, DIR_SOUTH);
+		old_direction = direction;
+		direction = DIR_SOUTH;
+	}
 }
 
 void check_user_input(){
