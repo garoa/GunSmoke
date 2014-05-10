@@ -203,19 +203,53 @@ void init_system(){
 	}
 }
 
+void erase_mouth_when_turning(){
+	int x=pixo_x, y=pixo_y;
+	switch(direction){
+		case DIR_NORTH:
+			set_char(x+2,   y, BLANK_CHAR, BODY_COLOR);
+			set_char(x+1,   y, BLANK_CHAR, BODY_COLOR);
+			set_char(x+2, y+1, BLANK_CHAR, BODY_COLOR);
+			set_char(x+1, y+1, BLANK_CHAR, BODY_COLOR);
+			break;
+		case DIR_SOUTH:
+			set_char(x-1,   y, BLANK_CHAR, BODY_COLOR);
+			set_char(x-2,   y, BLANK_CHAR, BODY_COLOR);
+			set_char(x-1, y-1, BLANK_CHAR, BODY_COLOR);
+			set_char(x-2, y-1, BLANK_CHAR, BODY_COLOR);
+			break;
+		case DIR_EAST:
+			set_char(  x, y+1, BLANK_CHAR, BODY_COLOR);
+			set_char(  x, y+2, BLANK_CHAR, BODY_COLOR);
+			set_char(x-1, y+1, BLANK_CHAR, BODY_COLOR);
+			set_char(x-1, y+2, BLANK_CHAR, BODY_COLOR);
+			break;
+		case DIR_WEST:
+			set_char(  x, y-1, BLANK_CHAR, BODY_COLOR);
+			set_char(x+1, y-1, BLANK_CHAR, BODY_COLOR);
+			set_char(  x, y-2, BLANK_CHAR, BODY_COLOR);
+			set_char(x+1, y-2, BLANK_CHAR, BODY_COLOR);
+			break;
+	}
+}
+
 void button_right_pressed(){
+	if (direction != DIR_EAST)	erase_mouth_when_turning();
 	direction = DIR_EAST;
 }
 
 void button_left_pressed(){
+	if (direction != DIR_WEST)	erase_mouth_when_turning();
 	direction = DIR_WEST;
 }
 
 void button_up_pressed(){
+	if (direction != DIR_NORTH)	erase_mouth_when_turning();
 	direction = DIR_NORTH;
 }
 
 void button_down_pressed(){
+	if (direction != DIR_SOUTH)	erase_mouth_when_turning();
 	direction = DIR_SOUTH;
 }
 
