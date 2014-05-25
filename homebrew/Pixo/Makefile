@@ -1,5 +1,5 @@
 MAME = ~/devel/mame_git_svn/mame/mame64d
-ROMPATH = ~/nonfree/mame/
+ROMPATH = ~/nonfree/mame
 Z80ASSEMBLER = as-z80
 Z80COMPILER = sdcc -mz80
 OBJCOPY = objcopy
