@@ -67,6 +67,39 @@ void clear_screen(){
 }
 
 #define BODY_COLOR 6
+#define SCENARIO_COLOR 6
+#define SCENARIO_WIDTH 28
+#define SCENARIO_HEIGHT 32
+
+#define out_of_screen__left 2
+void draw_scenario(){
+	int x,y;
+
+	set_char(0, out_of_screen__left, CORNER_BOTTOM_LEFT,  SCENARIO_COLOR);
+	set_char(0, out_of_screen__left + SCENARIO_WIDTH-1, CORNER_TOP_LEFT,  SCENARIO_COLOR);
+	set_char(SCENARIO_HEIGHT-1, out_of_screen__left, CORNER_TOP_LEFT,  SCENARIO_COLOR);
+	set_char(SCENARIO_HEIGHT-1, out_of_screen__left + SCENARIO_WIDTH-1, CORNER_TOP_RIGHT,  SCENARIO_COLOR);
+
+	for (x=1; x<SCENARIO_HEIGHT/2; x++){
+		set_char(x, out_of_screen__left, LEFT_BORDER__BOTTOM,  SCENARIO_COLOR);
+		set_char(x, out_of_screen__left + SCENARIO_WIDTH-1, RIGHT_BORDER__BOTTOM,  SCENARIO_COLOR);
+	}
+
+	for (x=SCENARIO_HEIGHT/2; x<SCENARIO_HEIGHT-1; x++){
+		set_char(x, out_of_screen__left, LEFT_BORDER__TOP,  SCENARIO_COLOR);
+		set_char(x, out_of_screen__left + SCENARIO_WIDTH-1, RIGHT_BORDER__TOP,  SCENARIO_COLOR);
+	}
+
+	for (y=1; y<SCENARIO_WIDTH/2; y++){
+		set_char(SCENARIO_HEIGHT-1, out_of_screen__left + y, TOP_BORDER__LEFT,  SCENARIO_COLOR);
+		set_char(0, out_of_screen__left + y, BOTTOM_BORDER__LEFT,  SCENARIO_COLOR);
+	}
+
+	for (y=SCENARIO_WIDTH/2; y<SCENARIO_WIDTH-1; y++){
+		set_char(SCENARIO_HEIGHT-1, out_of_screen__left + y, TOP_BORDER__RIGHT,  SCENARIO_COLOR);
+		set_char(0, out_of_screen__left + y, BOTTOM_BORDER__RIGHT,  SCENARIO_COLOR);
+	}
+}
 
 void draw_head_closed_north(int x, int y){
 	set_char(x+2, y, PIXO_CLOSED_LIPS_N,  BODY_COLOR);
@@ -219,6 +252,7 @@ void init_system(){
 	state = CLOSED_MOUTH;
 
 	init_video();
+	draw_scenario();
 
 	while(true) {
 	__asm

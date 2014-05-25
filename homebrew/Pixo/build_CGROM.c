@@ -89,6 +89,21 @@ int main(){
 	save_tile(0, 4, PIXO_BODY_W_THEN_N);
 	save_tile(0, 1, PIXO_BODY_N_THEN_E);
 
+	save_tile(8, 3, CORNER_TOP_LEFT);
+	save_tile(11, 3, CORNER_TOP_RIGHT);
+	save_tile(8, 6, CORNER_BOTTOM_LEFT);
+	save_tile(11, 6, CORNER_BOTTOM_RIGHT);
+
+	save_tile(9, 3, TOP_BORDER__LEFT);
+	save_tile(10, 3, TOP_BORDER__RIGHT);
+	save_tile(9, 6, BOTTOM_BORDER__LEFT);
+	save_tile(10, 6, BOTTOM_BORDER__RIGHT);
+
+	save_tile(8, 4, LEFT_BORDER__TOP);
+	save_tile(8, 5, LEFT_BORDER__BOTTOM);
+	save_tile(11, 4, RIGHT_BORDER__TOP);
+	save_tile(11, 5, RIGHT_BORDER__BOTTOM);
+
 	fclose(fp);
 	return 0;
 }
