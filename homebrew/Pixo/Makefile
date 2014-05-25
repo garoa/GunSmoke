@@ -5,13 +5,14 @@ Z80COMPILER = sdcc -mz80
 OBJCOPY = objcopy
 CC = gcc -std=gnu99
 PCB_VARIANT = gunsmokeb
+ROMSET = 3.ic85 09n_gs03.bin 11f_gs01.bin
 
-all: 3.ic85 11f_gs01.bin
+all: $(ROMSET)
 
-run: 3.ic85 11f_gs01.bin
+run: $(ROMSET)
 	$(MAME) -rp $(ROMPATH) $(PCB_VARIANT) -window
 
-debug: 3.ic85 11f_gs01.bin
+debug: $(ROMSET)
 	$(MAME) -rp $(ROMPATH) $(PCB_VARIANT) -window -debug
 
 boot.o: boot.s
@@ -36,11 +37,14 @@ pixo_maincpu.ihx: pixo_maincpu.c char_codes.h boot.o
 	$(OBJCOPY) pixo_maincpu.ihx -I ihex -O binary 3.ic85
 	cp 3.ic85 $(ROMPATH)/gunsmoke
 
+09n_gs03.bin: pixo_maincpu.ihx
+	$(OBJCOPY) pixo_maincpu.ihx -I ihex -O binary 09n_gs03.bin
+	cp 09n_gs03.bin $(ROMPATH)/gunsmoke
+
 clean:
+	rm $(ROMSET)
 	rm boot.o
 	rm build_CGROM
-	rm 11f_gs01.bin
-	rm 3.ic85
 	rm pixo_maincpu.o
 	rm pixo_maincpu.ihx
 	rm pixo_maincpu.map
