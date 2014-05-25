@@ -32,6 +32,7 @@ char input_map;
 char pixo_x, pixo_y;
 char direction, old_direction;
 char state;
+int scroll_x_pos;
 
 enum {
 	DIR_NORTH,
@@ -236,6 +237,7 @@ void draw_head_closed(int x, int y){
 }
 
 void init_video(){
+	scroll_x_pos = 0x1000;
 	*VIDEOCFG = 0x30; // enables bg / enables sprites / selects sprite3bank #0
 	*HWCFG = 0x80; // unflip screen and enable chars
 
@@ -403,6 +405,11 @@ void game_tick(){
 	draw_pixotosco();
 }
 
+void 	set_scrollx(int pos){
+	*(SCROLLX) = pos&0xFF;
+	*(SCROLLX+1) = (pos>>8)&0xFF;
+}
+
 void main_loop(){
 	check_user_input();
 
@@ -411,6 +418,8 @@ void main_loop(){
 		game_tick();
 		mainloop_counter = 0;
 	}
+
+	set_scrollx(scroll_x_pos++);
 }
 
 
