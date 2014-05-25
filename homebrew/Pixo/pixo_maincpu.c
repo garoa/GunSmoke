@@ -68,7 +68,7 @@ void clear_screen(){
 }
 
 #define BODY_COLOR 6
-#define SCENARIO_COLOR 23
+#define SCENARIO_COLOR 9
 #define SCENARIO_WIDTH 28
 #define SCENARIO_HEIGHT 32
 
