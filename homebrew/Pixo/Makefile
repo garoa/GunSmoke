@@ -22,12 +22,12 @@ pixo.xpm: pixo.xcf
 	xcf2png pixo.xcf -o pixo.png
 	convert pixo.png pixo.xpm
 
-build_CGROM: pixo.xpm build_CGROM.c char_codes.h
-	$(CC) build_CGROM.c -o build_CGROM
+patch_CGROM: pixo.xpm patch_CGROM.c char_codes.h
+	$(CC) patch_CGROM.c -o patch_CGROM
 
-11f_gs01.bin: build_CGROM
+11f_gs01.bin: patch_CGROM
 	cp $(ROMPATH)/gunsmoke/11f_gs01.bin .
-	./build_CGROM
+	./patch_CGROM
 	cp 11f_gs01.bin $(ROMPATH)/gunsmoke/
 
 pixo_maincpu.ihx: pixo_maincpu.c char_codes.h boot.o
@@ -44,7 +44,7 @@ pixo_maincpu.ihx: pixo_maincpu.c char_codes.h boot.o
 clean:
 	rm $(ROMSET)
 	rm boot.o
-	rm build_CGROM
+	rm patch_CGROM
 	rm pixo_maincpu.o
 	rm pixo_maincpu.ihx
 	rm pixo_maincpu.map
