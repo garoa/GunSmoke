@@ -237,7 +237,7 @@ void draw_head_closed(int x, int y){
 }
 
 void init_video(){
-	scroll_x_pos = 0x1000;
+	scroll_x_pos = 0x0000;
 	*VIDEOCFG = 0x30; // enables bg / enables sprites / selects sprite3bank #0
 	*HWCFG = 0x80; // unflip screen and enable chars
 
