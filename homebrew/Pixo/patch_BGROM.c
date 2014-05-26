@@ -63,7 +63,7 @@ void save_tile(int x, int y, int tile_number){
 
 //Entretanto tive que fazer uma massagem algébrica gambiarrística pra acertar o posicionamento dos pixels
 //Não está claro ainda pra mim por que... Eu gostaria de implementar isso de uma forma mais clara e mais intuitiva:
-			color_code = pixo_background[xpm_header_offset + y*32 + j][x*32 + (i/4)*4 + 3-(i%4)];
+			color_code = pixo_background[xpm_header_offset + 255 - (x*32 + (i/4)*4 + 3-(i%4))][y*32 + j]; 
 
 
 			//find the color index by searching in the XPM palette header
