@@ -1,6 +1,6 @@
-MAME = ~/devel/mame_git_svn/mame/mame64d
+MAME = ~/devel/github_felipesanches/mame_master/mame64
 ROMPATH = ~/nonfree/mame
-Z80ASSEMBLER = as-z80
+Z80ASSEMBLER = ~/devel/asz80/asxv5pxx/asxmak/linux/build/asz80
 Z80COMPILER = sdcc -mz80
 OBJCOPY = objcopy
 CC = gcc -std=gnu99
@@ -56,7 +56,7 @@ patch_BGROM: pixo_background.xpm patch_BGROM.c
 bg_roms: patch_BGROM
 	cp $(ROMPATH)/gunsmoke/*.bin .
 	./patch_BGROM
-	cp *.bin $(ROMPATH)/gunsmoke/
+	cp $(ROMSET) $(ROMPATH)/gunsmoke/
 
 pixo_maincpu.ihx: pixo_maincpu.c char_codes.h boot.o
 	$(Z80COMPILER) boot.o pixo_maincpu.c --code-loc 0x0080 --data-loc 0xE000 --no-std-crt0
