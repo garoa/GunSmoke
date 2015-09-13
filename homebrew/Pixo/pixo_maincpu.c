@@ -419,7 +419,12 @@ void main_loop(){
 		mainloop_counter = 0;
 	}
 
-	set_scrollx(scroll_x_pos++);
+	set_scrollx(scroll_x_pos);
+
+	scroll_x_pos++;
+
+	if (scroll_x_pos==256)
+		scroll_x_pos=0x4000;
 }
 
 

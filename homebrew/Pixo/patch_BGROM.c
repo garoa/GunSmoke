@@ -8,7 +8,7 @@
 #define MAX_TILES 512
 #define WIDTH 32*8
 #define HEIGHT 32*8
-#define NUM_COLORS 64
+#define NUM_COLORS 16
 #define xpm_header_offset (1+NUM_COLORS)
 
 struct gfx_layout
@@ -42,11 +42,106 @@ static const struct gfx_layout tilelayout =
 
 FILE* tilemap;
 FILE* tile_rom_fp[8];
+FILE* palette_rom_fp[3];
+FILE* tile_pal_rom_fp[2];
+
+unsigned char hex2int(char c){
+	if (c >= '0' && c <= '9') return c - '0';
+	if (c >= 'a' && c <= 'f') return c - 'a' + 10;
+	if (c >= 'A' && c <= 'F') return c - 'A' + 10;
+	printf("ERROR: invalid hex number convertion\n");
+	return 0;
+}
+
+unsigned char xx2value(char* s){
+	unsigned char val = (hex2int(s[0])*16 + hex2int(s[1]));
+	printf ("%c%c %02x\n", s[0], s[1], val);
+	return val;
+}
+
+void store_default_16colors_pal(){
+	unsigned char value;
+
+	for (int idx=0; idx<16; idx++){
+		for (int i=0; i<3; i++){
+			//store R, G and B values
+			value = (xx2value(&pixo_background[idx+1][5 + 2*i]) >> 4) & 0x0F;
+			printf("value=%02x\n", value);
+			fseek(palette_rom_fp[i], idx, SEEK_SET);
+			fwrite(&value, 1, 1, palette_rom_fp[i]);
+		}
+	}
+
+	for (int idx=0; idx<16; idx++){
+		value = idx;
+		fseek(tile_pal_rom_fp[0], idx, SEEK_SET);
+		fwrite(&value, 1, 1, tile_pal_rom_fp[0]);
+
+		value = 0;
+		fseek(tile_pal_rom_fp[1], idx, SEEK_SET);
+		fwrite(&value, 1, 1, tile_pal_rom_fp[1]);
+	}
+}
+
+int get_color_index(int x, int y, int i, int j){
+//Essa era a linha que deveria ser a correta:
+//char color_code = pixo_background[xpm_header_offset + y*32 + j][x*32 + i];
+
+//Entretanto tive que fazer uma massagem algébrica gambiarrística pra acertar o posicionamento dos pixels
+//Não está claro ainda pra mim por que... Eu gostaria de implementar isso de uma forma mais clara e mais intuitiva:
+	char color_code = pixo_background[xpm_header_offset + 255 - (x*32 + (i/4)*4 + 3-(i%4))][y*32 + j]; 
+
+
+	//find the color index by searching in the XPM palette header
+	for (int idx=0; idx<NUM_COLORS; idx++){
+		if (color_code == pixo_background[idx+1][0]){
+			return idx;
+			break;
+		}
+	}
+
+	return 0; //TODO: indicate error by returning -1.
+}
+
+
+void save_tile_palette(int x, int y){
+	char tile_colors_index = 0;
+	char tile_colors[16];
+	char color_index;
+
+	for (int i=0; i<32; i++){
+		for (int j=0; j<32; j++){
+			color_index = get_color_index(x,y,i,j);
+
+			//look for color_index in the list of colors we used in this tile up to now
+			bool found = false;
+			for (int idx=0; idx<tile_colors_index; idx++){
+				if (tile_colors[idx] == color_index){
+					found = true;
+					break;
+				}
+			}
+			if (!found){
+				tile_colors[tile_colors_index++] = color_index;
+				if (tile_colors_index == 16){
+					tile_colors_index--;
+					printf("ERROR: exceeded max number of colors in a single background tile.\n");
+				}
+			}
+		}
+	}
+
+	//TODO: check if palette has been already used in another tile and reuse it
+
+	//for now we create a single pal for each tile :-P	
+//	store_single_tile_pal(...);	
+}
 
 void save_tile(int x, int y, int tile_number){
 	printf("save_tile x:%d y:%d tile_number:%d\n", x, y, tile_number);
 
-	char color_code;
+//	save_tile_palette(x, y);
+
 	char color_index;
 	char value;
 
@@ -58,22 +153,7 @@ void save_tile(int x, int y, int tile_number){
 	for (int i=0; i<32; i++){
 		for (int j=0; j<32; j++){
 
-//Essa era a linha que deveria ser a correta:
-//			color_code = pixo_background[xpm_header_offset + y*32 + j][x*32 + i];
-
-//Entretanto tive que fazer uma massagem algébrica gambiarrística pra acertar o posicionamento dos pixels
-//Não está claro ainda pra mim por que... Eu gostaria de implementar isso de uma forma mais clara e mais intuitiva:
-			color_code = pixo_background[xpm_header_offset + 255 - (x*32 + (i/4)*4 + 3-(i%4))][y*32 + j]; 
-
-
-			//find the color index by searching in the XPM palette header
-			color_index = 0;
-			for (int idx=0; idx<64; idx++){
-				if (color_code == pixo_background[idx+1][0]){
-					color_index=idx;
-					break;
-				}
-			}
+			color_index = get_color_index(x,y,i,j);
 
 			for (int bit=0; bit<4; bit++){
 				int bit_address = tilelayout.increment * tile_number
@@ -95,6 +175,19 @@ void save_tile(int x, int y, int tile_number){
 			}
 		}
 	}
+
+	int pal_index = 0;
+
+	//TODO: select palette based on colors used
+	//and maybe store a new one.
+
+	//store the palette used by this tile
+	fseek(tilemap, (8*x + y)*2 + 1, SEEK_SET);
+	fread(&value, 1, 1, tilemap);
+	value &= ~0x3c;
+	value |= pal_index << 2;
+	fseek(tilemap, (8*x + y)*2 + 1, SEEK_SET);
+	fwrite(&value, 1, 1, tilemap);
 }
 
 int calculate_tile_hash(int i, int j){
@@ -114,6 +207,15 @@ int main(){
 	tile_rom_fp[5] = fopen("05a_gs08.bin", "r+");
 	tile_rom_fp[6] = fopen("04a_gs07.bin", "r+");
 	tile_rom_fp[7] = fopen("02a_gs06.bin", "r+");
+
+	palette_rom_fp[0] = fopen("03b_g-01.bin", "r+");
+	palette_rom_fp[1] = fopen("04b_g-02.bin", "r+");
+	palette_rom_fp[2] = fopen("05b_g-03.bin", "r+");
+
+	tile_pal_rom_fp[0] = fopen("14a_g-06.bin", "r+");
+	tile_pal_rom_fp[1] = fopen("15a_g-07.bin", "r+");
+
+	store_default_16colors_pal();
 
 	int tile_number=0;
 	int hash;
@@ -140,6 +242,10 @@ int main(){
 				fclose(tilemap);
 				for (int i=0; i<8; i++)
 					fclose(tile_rom_fp[i]);
+				for (int i=0; i<2; i++)
+					fclose(tile_pal_rom_fp[i]);
+				for (int i=0; i<3; i++)
+					fclose(palette_rom_fp[i]);
 				return -1;
 			}
 		}
@@ -148,6 +254,10 @@ int main(){
 	fclose(tilemap);
 	for (int i=0; i<8; i++)
 		fclose(tile_rom_fp[i]);
+	for (int i=0; i<2; i++)
+		fclose(tile_pal_rom_fp[i]);
+	for (int i=0; i<3; i++)
+		fclose(palette_rom_fp[i]);
 	return 0;
 }
 
